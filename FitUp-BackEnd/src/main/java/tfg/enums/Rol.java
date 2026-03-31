@@ -1,4 +1,6 @@
 package tfg.enums;
 
-public class Rol {
+public enum Rol {
+    USER,
+    ADMIN
 }

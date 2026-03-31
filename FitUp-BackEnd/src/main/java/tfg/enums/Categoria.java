@@ -1,4 +1,7 @@
 package tfg.enums;
 
-public class Categoria {
+public enum Categoria {
+    SUPLEMENTO,
+    ROPA,
+    COMIDA
 }
