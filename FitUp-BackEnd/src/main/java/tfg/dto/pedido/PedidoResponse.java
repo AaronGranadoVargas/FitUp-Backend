@@ -13,6 +13,6 @@ public class PedidoResponse {
     private Long id;
     private Long usuarioId;
     private LocalDateTime fechaPedido;
-    private BigDecimal total;
+    private Double total;
     private String estadoPago;
 }

@@ -1,6 +1,7 @@
 package tfg.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import tfg.enums.Rol;
@@ -8,6 +9,7 @@ import tfg.enums.Rol;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "usuarios")
 @Getter

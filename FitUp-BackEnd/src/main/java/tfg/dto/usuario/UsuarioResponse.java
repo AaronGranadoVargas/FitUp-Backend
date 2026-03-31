@@ -15,7 +15,7 @@ public class UsuarioResponse {
     private String nombre;
     private String email;
     private Rol rol;
-    private BigDecimal pesoActual;
+    private Double pesoActual;
     private Integer altura;
     private LocalDateTime fechaRegistro;
 }

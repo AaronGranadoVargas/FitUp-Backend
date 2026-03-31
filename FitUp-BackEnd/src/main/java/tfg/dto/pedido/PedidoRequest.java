@@ -10,6 +10,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PedidoRequest {
     private Long usuarioId;
-    private BigDecimal total;
+    private Double total;
     private String estadoPago; // Ej: PENDIENTE, PAGADO
 }
