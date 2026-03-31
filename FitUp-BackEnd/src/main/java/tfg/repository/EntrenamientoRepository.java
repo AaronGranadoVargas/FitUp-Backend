@@ -1,4 +1,7 @@
 package tfg.repository;
 
-public class EntrenamientoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import tfg.model.Entrenamiento;
+
+public interface EntrenamientoRepository extends JpaRepository<Entrenamiento, Long> {
 }

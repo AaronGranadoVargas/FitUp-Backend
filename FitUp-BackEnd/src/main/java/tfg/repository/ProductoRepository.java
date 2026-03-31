@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    // Aquí más adelante puedes añadir métodos customizados,
-    // como: List<Producto> findByCategoria(Categoria categoria);
 }
