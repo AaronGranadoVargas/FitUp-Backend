@@ -44,4 +44,14 @@ public class CarritoService {
         Carrito guardado = carritoRepository.save(carrito);
         return Mapper.toCarritoResponse(guardado);
     }
+    public void eliminarDelCarrito(Long idCarrito) {
+        carritoRepository.deleteById(idCarrito);
+    }
+
+    public void vaciarCarritoDeUsuario(Long usuarioId) {
+        List<Carrito> items = carritoRepository.findAll().stream()
+                .filter(c -> c.getUsuario() != null && c.getUsuario().getId().equals(usuarioId))
+                .toList();
+        carritoRepository.deleteAll(items);
+    }
 }

@@ -25,4 +25,14 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> crear(@RequestBody UsuarioRequest request) {
         return ResponseEntity.ok(usuarioService.crearUsuario(request));
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponse> actualizar(@PathVariable Long id, @RequestBody UsuarioRequest request) {
+        return ResponseEntity.ok(usuarioService.actualizarUsuario(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        usuarioService.eliminarUsuario(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -25,4 +25,15 @@ public class ProductoController {
     public ResponseEntity<ProductoResponse> crear(@RequestBody ProductoRequest request) {
         return ResponseEntity.ok(productoService.crearProducto(request));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductoResponse> actualizar(@PathVariable Long id, @RequestBody ProductoRequest request) {
+        return ResponseEntity.ok(productoService.actualizarProducto(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        productoService.eliminarProducto(id);
+        return ResponseEntity.noContent().build();
+    }
 }

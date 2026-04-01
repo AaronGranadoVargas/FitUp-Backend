@@ -38,4 +38,20 @@ public class UsuarioService {
         Usuario guardado = usuarioRepository.save(usuario);
         return Mapper.toUsuarioResponse(guardado);
     }
+    public UsuarioResponse actualizarUsuario(Long id, UsuarioRequest request) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setNombre(request.getNombre());
+        usuario.setEmail(request.getEmail());
+        usuario.setPesoActual(request.getPesoActual());
+        usuario.setAltura(request.getAltura());
+
+        Usuario actualizado = usuarioRepository.save(usuario);
+        return Mapper.toUsuarioResponse(actualizado);
+    }
+
+    public void eliminarUsuario(Long id) {
+        usuarioRepository.deleteById(id);
+    }
 }

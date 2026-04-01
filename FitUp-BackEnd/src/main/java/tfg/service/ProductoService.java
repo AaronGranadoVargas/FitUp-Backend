@@ -35,4 +35,23 @@ public class ProductoService {
         Producto guardado = productoRepository.save(producto);
         return Mapper.toProductoResponse(guardado);
     }
+
+    public ProductoResponse actualizarProducto(Long id, ProductoRequest request) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        producto.setNombre(request.getNombre());
+        producto.setDescripcion(request.getDescripcion());
+        producto.setPrecio(request.getPrecio());
+        producto.setStock(request.getStock());
+        producto.setCategoria(request.getCategoria());
+        producto.setImagenUrl(request.getImagenUrl());
+
+        Producto actualizado = productoRepository.save(producto);
+        return Mapper.toProductoResponse(actualizado);
+    }
+
+    public void eliminarProducto(Long id) {
+        productoRepository.deleteById(id);
+    }
 }

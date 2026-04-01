@@ -25,4 +25,15 @@ public class CarritoController {
     public ResponseEntity<CarritoResponse> agregar(@RequestBody CarritoRequest request) {
         return ResponseEntity.ok(carritoService.agregarAlCarrito(request));
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarItem(@PathVariable Long id) {
+        carritoService.eliminarDelCarrito(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/usuario/{usuarioId}")
+    public ResponseEntity<Void> vaciarCarrito(@PathVariable Long usuarioId) {
+        carritoService.vaciarCarritoDeUsuario(usuarioId);
+        return ResponseEntity.noContent().build();
+    }
 }
