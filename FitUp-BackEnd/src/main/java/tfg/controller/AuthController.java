@@ -7,6 +7,7 @@ import tfg.dto.auth.AuthResponse;
 import tfg.dto.auth.LoginRequest;
 import tfg.dto.usuario.UsuarioRequest;
 import tfg.service.AuthService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -16,12 +17,12 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> registrar(@RequestBody UsuarioRequest request) {
+    public ResponseEntity<AuthResponse> registrar(@Valid @RequestBody UsuarioRequest request) {
         return ResponseEntity.ok(authService.registrar(request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 }

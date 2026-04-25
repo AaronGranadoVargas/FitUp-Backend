@@ -10,6 +10,7 @@ import tfg.service.UsuarioService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*") // <-- ✨ ESTA ES LA LÍNEA MÁGICA
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 

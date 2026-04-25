@@ -1,6 +1,7 @@
 package tfg.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tfg.dto.auth.AuthResponse;
@@ -23,7 +24,7 @@ public class AuthService {
 
     public AuthResponse registrar(UsuarioRequest request) {
         if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Este email ya está en uso");
+            throw new IllegalArgumentException("Este email ya está en uso");
         }
 
         Usuario u = new Usuario();
@@ -43,10 +44,10 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         Usuario u = usuarioRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Credenciales incorrectas"));
+                .orElseThrow(() -> new BadCredentialsException("Credenciales incorrectas"));
 
         if (!passwordEncoder.matches(request.getPassword(), u.getPassword())) {
-            throw new RuntimeException("Credenciales incorrectas");
+            throw new BadCredentialsException("Credenciales incorrectas");
         }
 
         String token = jwtService.generarToken(u);
