@@ -1,9 +1,12 @@
 package tfg.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import tfg.dto.usuario.UsuarioProfileResponse;
 import tfg.dto.usuario.UsuarioRequest;
 import tfg.dto.usuario.UsuarioResponse;
+import tfg.dto.usuario.UsuarioUpdateRequest;
 import tfg.enums.Rol;
 import tfg.model.Usuario;
 import tfg.repository.UsuarioRepository;
@@ -38,6 +41,7 @@ public class UsuarioService {
         Usuario guardado = usuarioRepository.save(usuario);
         return Mapper.toUsuarioResponse(guardado);
     }
+
     public UsuarioResponse actualizarUsuario(Long id, UsuarioRequest request) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -53,5 +57,38 @@ public class UsuarioService {
 
     public void eliminarUsuario(Long id) {
         usuarioRepository.deleteById(id);
+    }
+
+
+    public UsuarioProfileResponse obtenerPerfil() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return new UsuarioProfileResponse(
+                usuario.getNombre(),
+                usuario.getEmail(),
+                usuario.getPesoActual(),
+                usuario.getAltura()
+        );
+    }
+
+    public UsuarioProfileResponse actualizarPerfil(UsuarioUpdateRequest request) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setNombre(request.getNombre());
+        usuario.setPesoActual(request.getPeso());
+        usuario.setAltura(request.getAltura());
+
+        Usuario guardado = usuarioRepository.save(usuario);
+
+        return new UsuarioProfileResponse(
+                guardado.getNombre(),
+                guardado.getEmail(),
+                guardado.getPesoActual(),
+                guardado.getAltura()
+        );
     }
 }
