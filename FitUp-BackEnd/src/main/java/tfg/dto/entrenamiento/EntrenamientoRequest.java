@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EntrenamientoRequest {
-    private Long usuarioId;
     private LocalDate fecha;
     private String notas;
 }
