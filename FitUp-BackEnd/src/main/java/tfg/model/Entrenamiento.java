@@ -1,29 +1,28 @@
 package tfg.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.Data;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "entrenamientos")
-@Getter
-@Setter
 public class Entrenamiento {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate fecha;
-    private String notas;
-
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL)
-    private List<EjercicioRealizado> ejercicios;
+    private LocalDate fecha;
+
+    @Column(columnDefinition = "TEXT")
+    private String notas;
+
+    @OneToMany(mappedBy = "entrenamiento", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<EjercicioRealizado> ejercicios = new ArrayList<>();
 }
