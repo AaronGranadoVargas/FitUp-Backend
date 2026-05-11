@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CarritoResponse {
     private Long id;
-    private Long usuarioId;
     private Long productoId;
+    private String nombreProducto;
+    private Double precioUnitario;
     private Integer cantidad;
+    private Double subtotal;
 }

@@ -42,13 +42,19 @@ public class Mapper {
 
     public static CarritoResponse toCarritoResponse(Carrito carrito) {
         if (carrito == null) return null;
-        Long usuarioId = (carrito.getUsuario() != null) ? carrito.getUsuario().getId() : null;
-        Long productoId = (carrito.getProducto() != null) ? carrito.getProducto().getId() : null;
+
+        Producto p = carrito.getProducto();
+        Double subtotal = (p != null && p.getPrecio() != null && carrito.getCantidad() != null)
+                ? p.getPrecio() * carrito.getCantidad()
+                : 0.0;
+
         return new CarritoResponse(
                 carrito.getId(),
-                usuarioId,
-                productoId,
-                carrito.getCantidad()
+                p != null ? p.getId() : null,
+                p != null ? p.getNombre() : "Producto desconocido",
+                p != null ? p.getPrecio() : 0.0,
+                carrito.getCantidad(),
+                subtotal
         );
     }
 
