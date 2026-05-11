@@ -10,6 +10,7 @@ import tfg.service.ProductoService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/productos")
 public class ProductoController {
 
