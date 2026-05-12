@@ -1,45 +1,80 @@
 package tfg.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import tfg.dto.pedido.PedidoRequest;
 import tfg.dto.pedido.PedidoResponse;
-import tfg.model.Pedido;
-import tfg.model.Usuario;
-import tfg.repository.PedidoRepository;
-import tfg.repository.UsuarioRepository;
+import tfg.model.*;
+import tfg.repository.*;
 import tfg.util.Mapper;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
+    @Autowired private PedidoRepository pedidoRepository;
+    @Autowired private CarritoRepository carritoRepository;
+    @Autowired private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    // ESTA ES LA LÍNEA QUE FALTABA Y QUE CAUSABA EL ERROR:
+    @Autowired private ProductoRepository productoRepository;
 
-    public List<PedidoResponse> obtenerPorUsuario(Long usuarioId) {
-        return pedidoRepository.findAll().stream()
-                .filter(p -> p.getUsuario() != null && p.getUsuario().getId().equals(usuarioId))
-                .map(Mapper::toPedidoResponse)
-                .collect(Collectors.toList());
+    private Usuario getUsuarioAutenticado() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usuarioRepository.findByEmail(email).orElseThrow();
     }
 
-    public PedidoResponse crearPedido(PedidoRequest request) {
-        Usuario usuario = usuarioRepository.findById(request.getUsuarioId()).orElseThrow();
+    @Transactional
+    public PedidoResponse procesarCheckout() {
+        Usuario usuario = getUsuarioAutenticado();
 
+        // 1. Obtener lo que hay en el carrito
+        List<Carrito> itemsCarrito = carritoRepository.findByUsuarioId(usuario.getId());
+        if (itemsCarrito.isEmpty()) {
+            throw new RuntimeException("El carrito está vacío");
+        }
+
+        // 2. Crear el pedido principal
         Pedido pedido = new Pedido();
         pedido.setUsuario(usuario);
-        pedido.setFechaPedido(LocalDateTime.now());
-        pedido.setTotal(request.getTotal());
-        pedido.setEstadoPago(request.getEstadoPago() != null ? request.getEstadoPago() : "PENDIENTE");
+        pedido.setEstadoPago("COMPLETADO");
 
+        double totalPedido = 0.0;
+
+        // 3. Procesar productos y actualizar STOCK
+        for (Carrito item : itemsCarrito) {
+            Producto producto = item.getProducto();
+
+            // VALIDACIÓN PRO: ¿Hay stock suficiente?
+            if (producto.getStock() < item.getCantidad()) {
+                throw new RuntimeException("No hay suficiente stock de: " + producto.getNombre());
+            }
+
+            // ACTUALIZACIÓN DE STOCK: Restamos las unidades compradas
+            producto.setStock(producto.getStock() - item.getCantidad());
+            productoRepository.save(producto); // AHORA SÍ FUNCIONA ESTA LÍNEA
+
+            // Creamos el detalle del pedido
+            DetallePedido detalle = new DetallePedido();
+            detalle.setPedido(pedido);
+            detalle.setProducto(producto);
+            detalle.setCantidad(item.getCantidad());
+            detalle.setPrecioUnitario(producto.getPrecio());
+
+            pedido.getDetalles().add(detalle);
+            totalPedido += (producto.getPrecio() * item.getCantidad());
+        }
+
+        pedido.setTotal(totalPedido);
+
+        // 4. Guardar el pedido oficial
         Pedido guardado = pedidoRepository.save(pedido);
+
+        // 5. Vaciar el carrito
+        carritoRepository.deleteAll(itemsCarrito);
+
         return Mapper.toPedidoResponse(guardado);
     }
 }

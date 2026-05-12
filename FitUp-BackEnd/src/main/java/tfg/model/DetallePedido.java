@@ -1,27 +1,26 @@
 package tfg.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "detalles_pedido")
-@Getter
-@Setter
 public class DetallePedido {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer cantidad;
-    private Double precioUnitario;
-
     @ManyToOne
-    @JoinColumn(name = "pedido_id")
+    @JoinColumn(name = "pedido_id", nullable = false)
     private Pedido pedido;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id")
+    @JoinColumn(name = "producto_id", nullable = false)
     private Producto producto;
+
+    private Integer cantidad;
+
+    @Column(name = "precio_unitario")
+    private Double precioUnitario;
 }

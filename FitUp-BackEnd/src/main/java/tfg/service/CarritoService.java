@@ -25,7 +25,6 @@ public class CarritoService {
     @Autowired private UsuarioRepository usuarioRepository;
     @Autowired private ProductoRepository productoRepository;
 
-    // MAGIA DE SEGURIDAD: Sacar el usuario del token, nunca de la URL
     private Usuario getUsuarioAutenticado() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return usuarioRepository.findByEmail(email)
@@ -34,7 +33,6 @@ public class CarritoService {
 
     public List<CarritoResponse> obtenerCarritoDeUsuario() {
         Usuario usuario = getUsuarioAutenticado();
-        // Usamos el método rápido del Repositorio
         return carritoRepository.findByUsuarioId(usuario.getId()).stream()
                 .map(Mapper::toCarritoResponse)
                 .collect(Collectors.toList());
@@ -46,16 +44,15 @@ public class CarritoService {
         Producto producto = productoRepository.findById(request.getProductoId())
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // LÓGICA PROFESIONAL: ¿Ya existe este producto en el carrito del usuario?
         Optional<Carrito> existente = carritoRepository.findByUsuarioIdAndProductoId(usuario.getId(), producto.getId());
 
         Carrito carrito;
         if (existente.isPresent()) {
-            carrito = existente.get(); // Si existe, solo sumamos la cantidad
+            carrito = existente.get();
             int sumar = request.getCantidad() != null ? request.getCantidad() : 1;
             carrito.setCantidad(carrito.getCantidad() + sumar);
         } else {
-            carrito = new Carrito(); // Si no existe, creamos el registro
+            carrito = new Carrito();
             carrito.setUsuario(usuario);
             carrito.setProducto(producto);
             carrito.setCantidad(request.getCantidad() != null ? request.getCantidad() : 1);
