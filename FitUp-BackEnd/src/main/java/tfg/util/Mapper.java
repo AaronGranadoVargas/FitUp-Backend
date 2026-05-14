@@ -5,7 +5,7 @@ import tfg.dto.producto.ProductoResponse;
 import tfg.dto.usuario.UsuarioResponse;
 import tfg.dto.carrito.CarritoResponse;
 import tfg.dto.entrenamiento.EntrenamientoResponse;
-import tfg.dto.entrenamiento.EjercicioResponse; // Añadido
+import tfg.dto.entrenamiento.EjercicioResponse;
 import tfg.dto.pedido.PedidoResponse;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ public class Mapper {
         return new ProductoResponse(
                 producto.getId(),
                 producto.getNombre(),
-                producto.getDescripcion(),
                 producto.getPrecio(),
                 producto.getStock(),
+                producto.getDescripcion(),
                 producto.getCategoria(),
                 producto.getImagenUrl()
         );

@@ -69,7 +69,8 @@ public class UsuarioService {
                 usuario.getNombre(),
                 usuario.getEmail(),
                 usuario.getPesoActual(),
-                usuario.getAltura()
+                usuario.getAltura(),
+                usuario.getRol() // 👈 ¡LA PIEZA CLAVE AÑADIDA!
         );
     }
 
@@ -88,7 +89,8 @@ public class UsuarioService {
                 guardado.getNombre(),
                 guardado.getEmail(),
                 guardado.getPesoActual(),
-                guardado.getAltura()
+                guardado.getAltura(),
+                guardado.getRol() // 👈 AQUÍ TAMBIÉN PARA QUE NO SE PIERDA
         );
     }
 }
