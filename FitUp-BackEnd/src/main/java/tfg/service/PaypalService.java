@@ -31,7 +31,6 @@ public class PaypalService {
         headers.setBearerAuth(token);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Ahora le pasamos dinámicamente dónde debe volver PayPal
         String body = "{" +
                 "\"intent\": \"CAPTURE\"," +
                 "\"purchase_units\": [{\"amount\": {\"currency_code\": \"EUR\", \"value\": \"" + total + "\"}}]," +

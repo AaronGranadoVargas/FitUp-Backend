@@ -17,7 +17,6 @@ public class CarritoController {
     @Autowired
     private CarritoService carritoService;
 
-    // Solo con hacer GET a /api/carrito, el sistema ya sabe de quién es por el Token
     @GetMapping
     public ResponseEntity<List<CarritoResponse>> obtenerCarrito() {
         return ResponseEntity.ok(carritoService.obtenerCarritoDeUsuario());

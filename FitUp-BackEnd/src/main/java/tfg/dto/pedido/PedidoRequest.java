@@ -11,5 +11,5 @@ import java.math.BigDecimal;
 public class PedidoRequest {
     private Long usuarioId;
     private Double total;
-    private String estadoPago; // Ej: PENDIENTE, PAGADO
+    private String estadoPago;
 }

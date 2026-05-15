@@ -13,6 +13,5 @@ public class UsuarioProfileResponse {
     private String email;
     private Double pesoActual;
     private Integer altura;
-    // 👇 AÑADE ESTO 👇
     private Rol rol;
 }

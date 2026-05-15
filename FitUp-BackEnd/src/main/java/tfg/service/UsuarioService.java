@@ -70,7 +70,7 @@ public class UsuarioService {
                 usuario.getEmail(),
                 usuario.getPesoActual(),
                 usuario.getAltura(),
-                usuario.getRol() // 👈 ¡LA PIEZA CLAVE AÑADIDA!
+                usuario.getRol()
         );
     }
 
@@ -90,7 +90,7 @@ public class UsuarioService {
                 guardado.getEmail(),
                 guardado.getPesoActual(),
                 guardado.getAltura(),
-                guardado.getRol() // 👈 AQUÍ TAMBIÉN PARA QUE NO SE PIERDA
+                guardado.getRol()
         );
     }
 }

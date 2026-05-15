@@ -9,6 +9,6 @@ public class ProductoRequest {
     private Double precio;
     private Integer stock;
     private String descripcion;
-    private Categoria categoria; // Cambiado de String a Categoria
+    private Categoria categoria;
     private String imagenUrl;
 }
