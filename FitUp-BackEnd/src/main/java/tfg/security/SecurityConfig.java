@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-// Estas dos líneas son nuevas para el CORS
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
@@ -30,9 +29,17 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(List.of("*"));
+
+                    configuration.setAllowedOrigins(List.of(
+                            "https://fit-up-front-end.vercel.app",
+                            "http://localhost:8081"
+                    ));
+
                     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
                     configuration.setAllowedHeaders(List.of("*"));
+                    configuration.setAllowCredentials(true);
+
                     return configuration;
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
